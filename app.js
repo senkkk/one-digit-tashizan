@@ -67,6 +67,7 @@ const els = {
   answerForm: document.querySelector('#answer-form'),
   answerInput: document.querySelector('#answer-input'),
   feedback: document.querySelector('#feedback'),
+  keypadGrid: document.querySelector('#keypad-grid'),
   choiceGrid: document.querySelector('#choice-grid'),
   newProblemButton: document.querySelector('#new-problem-button'),
   resetRunButton: document.querySelector('#reset-run-button'),
@@ -140,7 +141,6 @@ function renderProblem() {
     .map((choice) => `<button class="choice-button" type="button" data-choice="${choice}">${choice}</button>`)
     .join('');
   els.answerInput.value = '';
-  els.answerInput.focus();
 }
 
 function renderProgress() {
@@ -215,15 +215,14 @@ function awardFriend() {
 }
 
 function checkAnswer(value) {
-  if (Number.isNaN(value)) {
+  if (!els.answerInput.value || Number.isNaN(value)) {
     setFeedback('こたえを いれてね。', 'error');
-    els.answerInput.focus();
     return;
   }
 
   if (value !== state.currentProblem.answer) {
     setFeedback('もういちど、りんごを かぞえてみよう。', 'error');
-    els.answerInput.select();
+    els.answerInput.value = '';
     return;
   }
 
@@ -260,9 +259,44 @@ function closeModal() {
   nextProblem('つぎの 10もんも やってみよう。');
 }
 
+function renderKeypad() {
+  const buttons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'clear', 0];
+  els.keypadGrid.innerHTML = buttons.map((value) => {
+    if (value === 'clear') {
+      return '<button class="keypad-button clear" type="button" data-keypad-clear>クリア</button>';
+    }
+    return `<button class="keypad-button" type="button" data-keypad-number="${value}">${value}</button>`;
+  }).join('');
+}
+
+function appendAnswerDigit(digit) {
+  const nextValue = `${els.answerInput.value}${digit}`.replace(/^0+(?=\d)/, '');
+  els.answerInput.value = nextValue.slice(0, 2);
+  setFeedback('こたえが できたら「こたえる」を おしてね。');
+}
+
+function clearAnswer() {
+  els.answerInput.value = '';
+  setFeedback('こたえを けしたよ。');
+}
+
+renderKeypad();
+
 els.answerForm.addEventListener('submit', (event) => {
   event.preventDefault();
   checkAnswer(Number(els.answerInput.value));
+});
+
+els.keypadGrid.addEventListener('click', (event) => {
+  const numberButton = event.target.closest('[data-keypad-number]');
+  if (numberButton) {
+    appendAnswerDigit(numberButton.dataset.keypadNumber);
+    return;
+  }
+
+  if (event.target.closest('[data-keypad-clear]')) {
+    clearAnswer();
+  }
 });
 
 els.choiceGrid.addEventListener('click', (event) => {
