@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>たしざんのもり</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero" aria-labelledby="app-title">
+        <div>
+          <p class="eyebrow">ゆびで かぞえよう</p>
+          <h1 id="app-title">たしざんのもり</h1>
+          <p class="lead">
+            ひとけたの かずを たして、りんごを かぞえよう。10もん できたら、かわいい なかまが ふえるよ。
+          </p>
+        </div>
+        <div class="hero-card" aria-live="polite">
+          <span class="hero-card__label">できた かず</span>
+          <strong><span id="streak-count">0</span>/10</strong>
+          <small>あと <span id="remaining-count">10</span> もん</small>
+        </div>
+      </section>
+
+      <div class="layout-grid">
+        <section class="panel problem-panel" aria-labelledby="problem-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">もんだい</p>
+              <h2 id="problem-title">いくつ あるかな</h2>
+            </div>
+            <button class="ghost-button" id="new-problem-button" type="button">べつの もんだい</button>
+          </div>
+
+          <div class="sum-card" aria-live="polite">
+            <div class="number-bubble"><span id="addend-a">0</span></div>
+            <div class="plus-mark">+</div>
+            <div class="number-bubble"><span id="addend-b">0</span></div>
+            <div class="equals-mark">=</div>
+            <div class="answer-bubble">?</div>
+          </div>
+
+          <div class="apple-board" aria-label="かぞえる りんご">
+            <div class="apple-group">
+              <p><span id="group-a-label">0</span> こ</p>
+              <div class="apples" id="apples-a"></div>
+            </div>
+            <div class="apple-group">
+              <p><span id="group-b-label">0</span> こ</p>
+              <div class="apples" id="apples-b"></div>
+            </div>
+          </div>
+
+          <form class="answer-form" id="answer-form">
+            <label for="answer-input">こたえを いれてね</label>
+            <div class="answer-row">
+              <input id="answer-input" name="answer" type="number" inputmode="numeric" min="0" max="18" autocomplete="off" required />
+              <button class="primary-button" id="answer-button" type="submit">こたえる</button>
+            </div>
+          </form>
+
+          <div class="choice-area" aria-label="こたえを えらぶ">
+            <p>えらんでも いいよ</p>
+            <div class="choice-grid" id="choice-grid"></div>
+          </div>
+
+          <p class="feedback" id="feedback" aria-live="polite">りんごを ひとつずつ かぞえてみよう。</p>
+
+          <div class="progress-wrap">
+            <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progress-bar"></div></div>
+            <p>10もん できたら、なかまが くるよ。</p>
+          </div>
+        </section>
+
+        <aside class="panel reward-panel" aria-labelledby="reward-title">
+          <p class="eyebrow">なかま</p>
+          <h2 id="reward-title">さいきん きた なかま</h2>
+          <div class="last-reward empty" id="last-reward" aria-live="polite">
+            <div class="friend-emoji">?</div>
+            <p>まだ なかまは いないよ。10もん やってみよう。</p>
+          </div>
+          <button class="danger-button" id="reset-run-button" type="button">できた かずを 0にする</button>
+        </aside>
+      </div>
+
+      <section class="panel book-panel" aria-labelledby="book-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">ずかん</p>
+            <h2 id="book-title">なかまずかん</h2>
+          </div>
+          <div class="book-count"><span id="owned-count">0</span>/<span id="total-count">0</span> みつけた</div>
+        </div>
+        <div class="book-grid" id="book-grid"></div>
+        <button class="danger-button" id="reset-book-button" type="button">ずかんを けす</button>
+      </section>
+    </main>
+
+    <div class="modal" id="reward-modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="friend-emoji big" id="modal-emoji">🌟</div>
+        <h2 id="modal-title">あたらしい なかま</h2>
+        <p id="modal-description">よく がんばったね。</p>
+        <button class="primary-button full" id="close-modal-button" type="button">つぎへ</button>
+      </div>
+    </div>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
