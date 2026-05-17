@@ -55,13 +55,18 @@
           <form class="answer-form" id="answer-form">
             <label for="answer-input">こたえを いれてね</label>
             <div class="answer-row">
-              <input id="answer-input" name="answer" type="number" inputmode="numeric" min="0" max="18" autocomplete="off" required />
+              <input id="answer-input" name="answer" type="text" inputmode="none" autocomplete="off" readonly aria-describedby="keypad-help" />
               <button class="primary-button" id="answer-button" type="submit">こたえる</button>
             </div>
           </form>
 
+          <div class="keypad-area" aria-label="すうじボタンで こたえを いれる">
+            <p id="keypad-help">すうじボタンを おして、ブラウザだけで こたえよう。</p>
+            <div class="keypad-grid" id="keypad-grid"></div>
+          </div>
+
           <div class="choice-area" aria-label="こたえを えらぶ">
-            <p>えらんでも いいよ</p>
+            <p>こたえの こうほを えらんでも いいよ</p>
             <div class="choice-grid" id="choice-grid"></div>
           </div>
 
