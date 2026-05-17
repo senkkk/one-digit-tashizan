@@ -77,10 +77,14 @@ const els = {
   bookGrid: document.querySelector('#book-grid'),
   lastReward: document.querySelector('#last-reward'),
   rewardModal: document.querySelector('#reward-modal'),
+  wrongModal: document.querySelector('#wrong-modal'),
+  wrongModalDescription: document.querySelector('#wrong-modal-description'),
+  wrongModalHint: document.querySelector('#wrong-modal-hint'),
   modalEmoji: document.querySelector('#modal-emoji'),
   modalTitle: document.querySelector('#modal-title'),
   modalDescription: document.querySelector('#modal-description'),
-  closeModalButton: document.querySelector('#close-modal-button')
+  closeModalButton: document.querySelector('#close-modal-button'),
+  closeWrongModalButton: document.querySelector('#close-wrong-modal-button')
 };
 
 const state = {
@@ -214,6 +218,18 @@ function awardFriend() {
   els.rewardModal.hidden = false;
 }
 
+function showWrongAnswerPopup(value) {
+  const { a, b } = state.currentProblem;
+  els.wrongModalDescription.textContent = `${value} では なさそう。おばけと いっしょに もういちど みてみよう。`;
+  els.wrongModalHint.textContent = `${a}こ の りんご と ${b}こ の りんごを、さいしょから じゅんばんに かぞえてね。`;
+  els.wrongModal.hidden = false;
+  els.closeWrongModalButton.focus();
+}
+
+function closeWrongAnswerPopup() {
+  els.wrongModal.hidden = true;
+}
+
 function checkAnswer(value) {
   if (!els.answerInput.value || Number.isNaN(value)) {
     setFeedback('こたえを いれてね。', 'error');
@@ -221,7 +237,8 @@ function checkAnswer(value) {
   }
 
   if (value !== state.currentProblem.answer) {
-    setFeedback('もういちど、りんごを かぞえてみよう。', 'error');
+    setFeedback('おばけが「ちがうみたい」と おしえてくれたよ。', 'error');
+    showWrongAnswerPopup(value);
     els.answerInput.value = '';
     return;
   }
@@ -311,8 +328,15 @@ els.newProblemButton.addEventListener('click', () => nextProblem('べつの も�
 els.resetRunButton.addEventListener('click', resetRun);
 els.resetBookButton.addEventListener('click', resetBook);
 els.closeModalButton.addEventListener('click', closeModal);
+els.closeWrongModalButton.addEventListener('click', closeWrongAnswerPopup);
 els.rewardModal.addEventListener('click', (event) => {
   if (event.target === els.rewardModal) closeModal();
+});
+els.wrongModal.addEventListener('click', (event) => {
+  if (event.target === els.wrongModal) closeWrongAnswerPopup();
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !els.wrongModal.hidden) closeWrongAnswerPopup();
 });
 
 renderProgress();
